@@ -106,13 +106,8 @@ public class Bingo {
             System.out.println();
         }
     }
-    public boolean addPlayer(Player p){
-        for (Player player: players) {
-            if(player.getName().equals(p.getName())){
-                return players.add(p);
-            }
-        }
-        return false;
+    public void addPlayer(Player p){
+        players.add(p);
     }
 
     public String showCartonPlayer(String nombre){

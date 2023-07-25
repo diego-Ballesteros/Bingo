@@ -30,17 +30,16 @@ public class Main {
                     String name = entrada.next();
 
                     Player player = new Player(name);
-                    boolean isAddPlayer = bingo.addPlayer(player);
+                   bingo.addPlayer(player);
 
-                    if(isAddPlayer==true){
-                        for (int i = 0; i < numCart; i++) {
-                            carton = bingo.generate_carton();
-                            player.addCarton(carton);
-                        }
-                        System.out.println("jugador inscrito con " + numCart + " Cartones en juego: ");
-                    }else{
-                        System.out.println("No puede Agregar 2 jugadores con el missmo nombre");
+                    for (int i = 0; i < numCart; i++) {
+                        carton = bingo.generate_carton();
+                        player.addCarton(carton);
                     }
+                    System.out.println("jugador inscrito con " + numCart + " Cartones en juego: ");
+
+                    System.out.println("No puede Agregar 2 jugadores con el missmo nombre");
+
 
                     break;
 
@@ -61,7 +60,7 @@ public class Main {
                         i += 1;
                         int num = bingo.ball_drawn();
                         System.out.println(" Bola " + i + " --> " + num);
-                        Thread.sleep(9000);
+                        Thread.sleep(900);
 
                         for (Player playe : bingo.getPlayers()) {
                             bingo.validate_carton(playe);
