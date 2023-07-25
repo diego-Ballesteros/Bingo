@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
         Scanner entrada = new Scanner(System.in);
 
@@ -9,8 +9,7 @@ public class Main {
         String men = "\n 1 - Generar 1 carton nuevo "
                    + "\n 2 - Generar 3 cartones "
                    + "\n 3 - Mostrar cartones participantes "
-                   + "\n 4 - Empezar el juego "
-                   + "\n 0 - Salir ";
+                   + "\n 4 - Empezar el juego ";
         fin: do {
             System.out.println(men);
             int op = entrada.nextInt();
@@ -35,6 +34,7 @@ public class Main {
                         i += 1;
                         int num = bingo.ball_drawn();
                         System.out.println(" Bola " + i + " --> " + num);
+                        Thread.sleep(2500);
                         for (Carton car : bingo.getCartons()) {
                             bingo.validate_carton(car);
                         }
@@ -45,10 +45,9 @@ public class Main {
                     }else{
                         System.out.println(" :( No hubo ganador, ¿ Otra partida o que ? ");
                     }
-                    break;
-                case 0:
-                    System.out.println("|| Saliendo .. ||");
+                    System.out.println(" Fin del juego ...");
                     break fin;
+
                 default:
                     throw new AssertionError();
             }
