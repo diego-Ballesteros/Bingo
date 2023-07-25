@@ -5,19 +5,26 @@ import static java.util.Collections.shuffle;
 public class Bingo {
     private ArrayList<Integer> bombo;
     private ArrayList<Integer> ball_drawn;
-    private ArrayList<Carton> cartons;
-    private ArrayList<Carton> win_cartons;
+    private ArrayList<Player> players;
+    private Player playerwin;
+
+    public Player getPlayerwin() {
+        return playerwin;
+    }
+
+    private Carton cartonWin;
+
+    public Carton getCartonWin() {
+        return cartonWin;
+    }
 
     public final int GREATER_BALL = 30;
     public final int CARTON_SIZE = 9;
 
-    public ArrayList<Carton> getCartons() {
-        return cartons;
+    public ArrayList<Player> getPlayers() {
+        return players;
     }
 
-    public ArrayList<Carton> getWin_cartons() {
-        return win_cartons;
-    }
 
     public Bingo() {
         ArrayList<Integer> bomboAux = new ArrayList<>();
@@ -26,29 +33,34 @@ public class Bingo {
         }
         this.bombo = bomboAux;
         this.ball_drawn = new ArrayList<>();
-        this.cartons = new ArrayList<>();
-        this.win_cartons = new ArrayList<>();
+        this.players = new ArrayList<>();
+        this.cartonWin = null;
+        this.playerwin= null;
     }
 
     public boolean isFinalized() {
-        if (bombo.isEmpty() || win_cartons.size() > 0) {
+        if (bombo.isEmpty() || playerwin!=null) {
             return true;
         }
         return false;
     }
 
-    public boolean validate_carton(Carton carton) {
+    public boolean validate_carton(Player player) {
         boolean finded;
-        for (Integer numCarton : carton.getNumbers()) {
-            finded = false;
-            for (Integer numBallDrawn : ball_drawn) {
-                if (numCarton == numBallDrawn) {
-                    finded = true;
-                    break;
+
+            for (Carton cartonPLayer:player.getCartonsPlayer()) {
+                for (Integer numCarton : cartonPLayer.getNumbers()) {
+                    finded = false;
+                    for (Integer numBallDrawn : ball_drawn) {
+                        if (numCarton == numBallDrawn) {
+                            finded = true;
+                            break;
+                        }
+                    }
+                    if (!finded) return false;
                 }
+                cartonWin=cartonPLayer;
             }
-            if (!finded) return false;
-        }
         return true;
     }
 
@@ -62,9 +74,7 @@ public class Bingo {
         for (int i = 0; i < CARTON_SIZE; i++) {
             carton_numbers.add(all_numbers.get(i));
         }
-        Carton carton1;
-        carton1 = new Carton(carton_numbers);
-        cartons.add(carton1);
+        Carton carton1 = new Carton(carton_numbers);
         return carton1;
     }
 
@@ -77,25 +87,44 @@ public class Bingo {
         num = bombo.get(0);
         bombo.remove(num);
         ball_drawn.add(num);
-        for (Carton c: cartons) {
-            if(validate_carton(c)){
-                win_cartons.add(c);
+
+        for (Player player : players) {
+            if(validate_carton(player)){
+                playerwin = player;
             }
         }
         return num;
     }
-
     public void show_cartons(){
         int i=0;
-        for (Carton car: cartons) {
-            i+=1;
-            System.out.println("Carton "+ i + " -> "+car.toString());
+        for (Player pl: players) {
+            System.out.println("|| Cartones de "+ pl.getName());
+            for (Carton car: pl.getCartonsPlayer()) {
+                i+=1;
+                System.out.println("Carton "+ i + " -> "+car.toString());
+            }
+            System.out.println();
         }
     }
-    public void show_carton_win(){
-        for (Carton car: win_cartons) {
-            System.out.println("Carton -> "+car.toString());
+    public boolean addPlayer(Player p){
+        for (Player player: players) {
+            if(player.getName().equals(p.getName())){
+                return players.add(p);
+            }
         }
+        return false;
+    }
+
+    public String showCartonPlayer(String nombre){
+        String list = "";
+        for (Player player:players) {
+            if(player.getName().equals(nombre)){
+                for (Carton numCarton:player.getCartonsPlayer()) {
+                    list = list + numCarton.toString() +" \n";
+                }
+            }
+        }
+        return list;
     }
 
 }
