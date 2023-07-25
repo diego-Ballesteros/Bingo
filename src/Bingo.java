@@ -85,7 +85,7 @@ public class Bingo {
         return num;
     }
 
-    public void show_carton(){
+    public void show_cartons(){
         int i=0;
         for (Carton car: cartons) {
             i+=1;
